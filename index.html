@@ -1,0 +1,1225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Password Security Academy</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: "Segoe UI", Tahoma, system-ui, -apple-system, BlinkMacSystemFont;
+        }
+
+        body {
+            background-image: url('project4.jpg'); /* ضع هنا مسار صورة الخلفية */
+            background-size: cover;
+            background-position: center center;
+            background-attachment: fixed;
+            min-height: 100vh;
+            color: #e5e7eb;
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+            transition: background 0.4s ease, color 0.4s ease;
+        }
+
+
+        .app {
+            width: 100%;
+            max-width: 1100px;
+            background: rgba(15, 23, 42, 0.92);
+            border-radius: 18px;
+            padding: 20px 22px 26px;
+            box-shadow: 0 18px 45px rgba(0,0,0,0.6);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* floating locks */
+        .floating-lock {
+            position: absolute;
+            font-size: 32px;
+            opacity: 0.16;
+            animation: float 10s infinite ease-in-out;
+            pointer-events: none;
+        }
+        .lock1 { top: 8%; left: 5%; animation-delay: 0s; }
+        .lock2 { top: 65%; right: 8%; animation-delay: 2s; }
+        .lock3 { bottom: 5%; left: 40%; animation-delay: 4s; }
+
+        @keyframes float {
+            0%   { transform: translateY(0);    }
+            50%  { transform: translateY(-20px);}
+            100% { transform: translateY(0);    }
+        }
+
+        header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 12px;
+            align-items: center;
+            margin-bottom: 16px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .title-block {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        h1 {
+            font-size: 24px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        h1 span.logo {
+            display: inline-flex;
+            width: 32px;
+            height: 32px;
+            border-radius: 999px;
+            align-items: center;
+            justify-content: center;
+            background: radial-gradient(circle at 30% 30%, #22c55e, #16a34a);
+            box-shadow: 0 0 15px rgba(34, 197, 94, 0.7);
+            font-size: 18px;
+        }
+
+        .subtitle {
+            font-size: 16px;
+            color: #9ca3af;
+        }
+
+        .typing {
+            color: #a5b4fc;
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        .controls {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        button {
+            border: none;
+            cursor: pointer;
+            border-radius: 999px;
+            padding: 8px 14px;
+            font-size: 13px;
+            background: rgba(51, 65, 85, 0.95);
+            color: #e5e7eb;
+            transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+        }
+
+        button:hover {
+            background: #0ea5e9;
+            box-shadow: 0 0 12px rgba(56, 189, 248, 0.7);
+            transform: translateY(-1px);
+        }
+
+        button:active {
+            transform: translateY(0);
+            box-shadow: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            color: #0b1120;
+            font-weight: 700;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #2dd4bf, #22c55e);
+        }
+
+        nav {
+            margin: 10px 0 14px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .nav-btn {
+            padding: 7px 12px;
+            border-radius: 999px;
+            font-size: 12px;
+            background: rgba(15, 23, 42, 0.9);
+            color: #cbd5f5;
+            border: 1px solid transparent;
+        }
+
+        .nav-btn.active {
+            border-color: #38bdf8;
+            background: rgba(15, 23, 42, 0.3);
+            box-shadow: 0 0 10px rgba(56,189,248,0.6);
+        }
+
+        main {
+            position: relative;
+            z-index: 2;
+        }
+
+        .page {
+            display: none;
+            animation: fadeIn 0.35s ease;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px);}
+            to   { opacity: 1; transform: translateY(0);}
+        }
+
+        .section-card {
+            background: rgba(15, 23, 42, 0.95);
+            border-radius: 16px;
+            border: 1px solid rgba(148, 163, 184, 0.3);
+            padding: 16px 16px 18px;
+            margin-top: 4px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .section-header h2 {
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .section-header p {
+            font-size: 12px;
+            color: #9ca3af;
+        }
+
+        .badge {
+            padding: 3px 9px;
+            border-radius: 999px;
+            font-size: 11px;
+            background: rgba(37, 99, 235, 0.15);
+            color: #bfdbfe;
+            border: 1px solid rgba(59,130,246,0.7);
+        }
+
+        input[type="password"] {
+            width: 100%;
+            padding: 9px 10px;
+            border-radius: 10px;
+            border: 1px solid #4b5563;
+            background: rgba(15, 23, 42, 0.9);
+            color: #e5e7eb;
+            font-size: 14px;
+        }
+
+        input[type="password"]:focus {
+            outline: 1px solid #38bdf8;
+            border-color: #38bdf8;
+        }
+
+        .password-field {
+            position: relative;
+            margin-top: 10px;
+        }
+
+        .password-field input {
+            padding-right: 42px;
+        }
+
+        .eye-btn {
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 28px;
+            height: 28px;
+            border-radius: 999px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            background: rgba(30, 64, 175, 0.9);
+            box-shadow: 0 0 8px rgba(59,130,246,0.6);
+        }
+
+        .strength-wrapper {
+            margin-top: 12px;
+        }
+
+        .strength-bar-bg {
+            width: 100%;
+            height: 10px;
+            border-radius: 999px;
+            background: #111827;
+            overflow: hidden;
+        }
+
+        .strength-bar-fill {
+            width: 0%;
+            height: 100%;
+            border-radius: 999px;
+            background: #ef4444;
+            transition: width 0.3s ease, background 0.3s ease;
+        }
+
+        .strength-info {
+            margin-top: 8px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            align-items: center;
+        }
+
+        .strength-label {
+            font-weight: 700;
+        }
+
+        .strength-emoji {
+            font-size: 18px;
+        }
+
+        .pw-checklist {
+            margin-top: 10px;
+            font-size: 12px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+            gap: 6px;
+        }
+
+        .pw-check-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: #9ca3af;
+        }
+
+        .pw-check-item span.icon {
+            width: 16px;
+            height: 16px;
+            border-radius: 999px;
+            border: 1px solid #6b7280;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+        }
+
+        .pw-check-item.ok {
+            color: #bbf7d0;
+        }
+        .pw-check-item.ok span.icon {
+            border-color: #22c55e;
+            background: #16a34a;
+            color: #022c22;
+        }
+
+        .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 10px;
+            margin-top: 8px;
+        }
+
+        .tip-card {
+            background: rgba(15,23,42,0.95);
+            border-radius: 14px;
+            border: 1px solid rgba(148,163,184,0.4);
+            padding: 10px 10px 11px;
+            font-size: 13px;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s, background 0.2s;
+        }
+
+        .tip-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 22px rgba(15,23,42,0.9);
+            border-color: #22c55e;
+            background: rgba(6, 78, 59, 0.7);
+        }
+
+        .tip-card .tip-icon {
+            font-size: 18px;
+            margin-bottom: 4px;
+        }
+
+        .tip-card small {
+            color: #9ca3af;
+            font-size: 11px;
+        }
+
+        .random-tip-box {
+            margin-top: 12px;
+            padding: 8px 10px;
+            border-radius: 12px;
+            background: rgba(15,23,42,0.9);
+            border: 1px dashed rgba(148,163,184,0.6);
+            font-size: 12px;
+            min-height: 32px;
+            display: flex;
+            align-items: center;
+        }
+
+        .attacks-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+
+            margin-top: 20px;
+        }
+
+        .attack-card {
+            background: rgba(15,23,42,0.95);
+            border-radius: 14px;
+            border: 1px solid rgba(148,163,184,0.4);
+            padding: 9px 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: border-color 0.2s, background 0.2s, transform 0.2s;
+        }
+
+        .attack-card:hover {
+            border-color: #38bdf8;
+            background: rgba(15,23,42,0.8);
+            transform: translateY(-2px);
+        }
+
+        .attack-header {
+            display: flex;
+flex-direction: column; /* ترتيب العناصر بشكل عمودي */
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+.attack-image {
+            width: 100%; /* تكبير حجم الصورة */
+            height: auto;
+max-width:400px;
+            margin-bottom: 15px; /* مسافة بين الصورة والعنوان */
+            border-radius: 8px;
+            object-fit: cover;
+            cursor: pointer;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .attack-title {
+            font-weight: 700;
+           font-size: 18px;
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
+
+        .attack-badge {
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 999px;
+            background: rgba(249,115,22,0.15);
+            color: #fed7aa;
+        }
+
+        .attack-arrow {
+            transition: transform 0.2s;
+        }
+
+        .attack-card.open .attack-arrow {
+            transform: rotate(180deg);
+        }
+
+        .attack-body {
+display:none;
+            margin-top: 6px;
+            font-size: 12px;
+            color: #d1d5db;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.25s ease;
+        }
+
+        .attack-card.open .attack-body {
+display:block;
+            max-height: 260px;
+        }
+
+        .attack-body p {
+            margin-bottom: 4px;
+        }
+
+        .quiz-questions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 8px;
+        }
+
+        .question-card {
+            background: rgba(15,23,42,0.95);
+            border-radius: 14px;
+            border: 1px solid rgba(148,163,184,0.5);
+            padding: 9px 10px;
+            font-size: 13px;
+            transition: border-color 0.2s, background 0.2s;
+        }
+
+        .question-card.correct {
+            border-color: #22c55e;
+            background: rgba(6,78,59,0.7);
+        }
+
+        .question-card.wrong {
+            border-color: #ef4444;
+            background: rgba(127,29,29,0.6);
+        }
+
+        .question-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            margin-top: 2px;
+        }
+
+        .options label {
+            font-size: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .quiz-result {
+            margin-top: 8px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        footer {
+            margin-top: 14px;
+            font-size: 11px;
+            color: #9ca3af;
+            display: flex;
+            justify-content: space-between;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        @media (max-width: 640px) {
+            h1 { font-size: 19px; }
+            .section-card { padding: 12px; }
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="app">
+    <!-- floating locks -->
+    <div class="floating-lock lock1">🔒</div>
+    <div class="floating-lock lock2">🔐</div>
+    <div class="floating-lock lock3">🛡️</div>
+
+    <header>
+        <div class="title-block">
+            <h1>
+                <span class="logo">🔑</span>
+                Password Security Academy
+            </h1>
+            <div class="subtitle">
+                Web Application Development I – Password Security Project
+            </div>
+            <div class="typing">
+                <span id="typing-text"></span><span id="typing-cursor">|</span>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button class="btn-primary" id="go-home-btn">Start Strength Check</button>
+        </div>
+    </header>
+
+    <nav>
+        <button class="nav-btn active" data-target="home">Password Strength</button>
+        <button class="nav-btn" data-target="tips">Tips</button>
+        <button class="nav-btn" data-target="attacks">Password Attacks</button>
+        <button class="nav-btn" data-target="quiz">Quiz</button>
+    </nav>
+
+    <main>
+        <!-- Password strength page -->
+        <section id="home" class="page active">
+            <div class="section-card">
+                <div class="section-header">
+                    <div>
+                        <h2>Password Strength Checker 🔍</h2>
+                        <p>Type a password and see the strength in real time.</p>
+                    </div>
+                    <span class="badge">Interactive</span>
+                </div>
+
+                <label for="password-input" style="font-size:13px;">Enter your password:</label>
+                <div class="password-field">
+                    <input type="password" id="password-input" placeholder="Example: StrongP@ssw0rd!2025">
+                    <button type="button" id="toggle-password-eye" class="eye-btn" aria-label="Show or hide password">👁️</button>
+                </div>
+
+                <div style="margin-top:10px; display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
+                    <button id="generate-password-btn">Generate strong password 🔐</button>
+                    <span id="generated-password" style="font-size:12px; color:#a5b4fc;"></span>
+                </div>
+
+                <div class="strength-wrapper">
+                    <div class="strength-bar-bg">
+                        <div class="strength-bar-fill" id="strength-bar"></div>
+                    </div>
+                    <div class="strength-info">
+                        <div>
+                            Strength:
+                            <span class="strength-label" id="strength-label">-</span>
+                        </div>
+                        <div class="strength-emoji" id="strength-emoji">🤔</div>
+                    </div>
+
+                    <div class="pw-checklist">
+                        <div class="pw-check-item" id="rule-length">
+                            <span class="icon">•</span>
+                            At least 10 characters
+                        </div>
+                        <div class="pw-check-item" id="rule-upper">
+                            <span class="icon">•</span>
+                            At least one uppercase letter (A–Z)
+                        </div>
+                        <div class="pw-check-item" id="rule-lower">
+                            <span class="icon">•</span>
+                            At least one lowercase letter (a–z)
+                        </div>
+                        <div class="pw-check-item" id="rule-number">
+                            <span class="icon">•</span>
+                            At least one digit (0–9)
+                        </div>
+                        <div class="pw-check-item" id="rule-symbol">
+                            <span class="icon">•</span>
+                            At least one symbol (! @ # $ …)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tips page -->
+        <section id="tips" class="page">
+            <div class="section-card">
+                <div class="section-header">
+                    <div>
+                        <h2>Password Tips 💡</h2>
+                        <p>Simple best practices to make your passwords stronger.</p>
+                    </div>
+                    <span class="badge">Best Practices</span>
+                </div>
+
+                <div class="tips-grid">
+                    <div class="tip-card">
+                        <div class="tip-icon">🧠</div>
+                        Do not reuse the same password for different accounts.
+                        <br>
+                        <small>If one account is compromised, others are at risk.</small>
+                    </div>
+                    <div class="tip-card">
+                        <div class="tip-icon">🎲</div>
+                        Use a long passphrase instead of a short word.
+                        <br>
+                        <small>Example: <code>ILoveCoffee@Morning2025!</code></small>
+                    </div>
+                    <div class="tip-card">
+                        <div class="tip-icon">🔐</div>
+                        Enable Two-Factor Authentication (2FA).
+                        <br>
+                        <small>Even if someone knows your password, they still need a second code.</small>
+                    </div>
+                    <div class="tip-card">
+                        <div class="tip-icon">⏰</div>
+                        Change important passwords regularly.
+                        <br>
+                        <small>Especially email and banking accounts.</small>
+                    </div>
+                    <div class="tip-card">
+                        <div class="tip-icon">🚫</div>
+                        Never share your password with anyone.
+                        <br>
+                        <small>Even if they say they are “support” or “IT”.</small>
+                    </div>
+                    <div class="tip-card">
+                        <div class="tip-icon">📱</div>
+                        Avoid saving passwords in plain notes or screenshots.
+                        <br>
+                        <small>Use a trusted password manager instead.</small>
+                    </div>
+                </div>
+
+                <div style="margin-top:10px; display:flex; gap:8px; flex-wrap:wrap;">
+                    <button id="random-tip-btn">Give me a random tip 🎲</button>
+                </div>
+
+                <div class="random-tip-box" id="random-tip-box">
+                    Click "Give me a random tip" to get an extra recommendation.
+                </div>
+            </div>
+        </section>
+
+        <!-- Attacks page -->
+        <section id="attacks" class="page">
+            <div class="section-card">
+                <div class="section-header">
+                    <div>
+                        <h2>Password Attacks ⚠️</h2>
+                        <p>Learn about common attack types and how to defend.</p>
+                    </div>
+                    <span class="badge">Security Awareness</span>
+                </div>
+
+                <div class="attacks-grid">
+                    <div class="attack-card">
+                        <div class="attack-header">
+                      <img src="brute-force.jpg" alt="Brute Force" class="attack-image">
+
+                            <div class="attack-title">
+                                💣 Brute Force
+                                <span class="attack-badge">Try all possibilities</span>
+                            </div>
+                            <div class="attack-arrow">⌄</div>
+                        </div>
+                        <div class="attack-body">
+                            <p><b>Description:</b> The attacker tries all possible passwords until one works.</p>
+                            <p><b>Example:</b> Trying every 6-digit PIN from 000000 to 999999.</p>
+                            <p><b>Defense:</b> Use long passwords and enable account lockout after several failed attempts.</p>
+                            <p><b>Scenario:</b> An attacker writes a script that sends thousands of different passwords to a login form every minute.</p>
+                        </div>
+                    </div>
+
+                    <div class="attack-card">
+                        <div class="attack-header">
+                    <img src="dictionary.jpg" alt="Dictionary Attack" class="attack-image">
+
+
+                            <div class="attack-title">
+                                📚 Dictionary Attack
+                                <span class="attack-badge">Word list</span>
+                            </div>
+                            <div class="attack-arrow">⌄</div>
+                        </div>
+                        <div class="attack-body">
+                            <p><b>Description:</b> The attacker uses a list of common words and passwords.</p>
+                            <p><b>Example:</b> Trying: <code>password</code>, <code>123456</code>, <code>qwerty</code>, <code>welcome</code>.</p>
+                            <p><b>Defense:</b> Avoid common words and predictable patterns.</p>
+                            <p><b>Scenario:</b> An attacker loads a file of 10,000 popular passwords and tests them automatically on a website login.</p>
+                        </div>
+                    </div>
+
+                    <div class="attack-card">
+                        <div class="attack-header">
+<img src="phishing.jpg" alt="Phishing Attack" class="attack-image">
+                            <div class="attack-title">
+                                🎣 Phishing
+                                <span class="attack-badge">Tricking the user</span>
+                            </div>
+                            <div class="attack-arrow">⌄</div>
+                        </div>
+                        <div class="attack-body">
+                            <p><b>Description:</b> The attacker sends fake messages or websites that look real.</p>
+                            <p><b>Example:</b> A fake “bank” email with a link that asks you to “verify” your password.</p>
+                            <p><b>Defense:</b> Check the URL, do not click suspicious links, and use 2FA.</p>
+                            <p><b>Scenario:</b> A user receives an email that looks like it is from their university and asks them to log in on a fake portal.</p>
+                        </div>
+                    </div>
+
+                    <div class="attack-card">
+                        <div class="attack-header">
+           <img src="shoulder.jpg" alt="Shoulder Surfing" class="attack-image">
+
+                            <div class="attack-title">
+                                👀 Shoulder Surfing
+                                <span class="attack-badge">Looking at the screen</span>
+                            </div>
+                            <div class="attack-arrow">⌄</div>
+                        </div>
+                        <div class="attack-body">
+                            <p><b>Description:</b> Someone watches you while you type your password.</p>
+                            <p><b>Example:</b> A person behind you in a lab or café.</p>
+                            <p><b>Defense:</b> Be aware of your environment and use a privacy screen if needed.</p>
+                            <p><b>Scenario:</b> In a busy computer lab, a student pretends to use their phone while secretly watching another student type their password.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quiz page -->
+        <section id="quiz" class="page">
+            <div class="section-card">
+                <div class="section-header">
+                    <div>
+                        <h2>Quick Quiz 🎓</h2>
+                        <p>Check your understanding in a few questions.</p>
+                    </div>
+                    <span class="badge">Self Assessment</span>
+                </div>
+
+                <div class="quiz-questions">
+                    <div class="question-card" data-correct="b">
+                        <div class="question-title">
+                            1) Which password is the strongest?
+                        </div>
+                        <div class="options">
+                            <label>
+                                <input type="radio" name="q1" value="a">
+                                123456
+                            </label>
+                            <label>
+                                <input type="radio" name="q1" value="b">
+                                StrongP@ssw0rd!2025
+                            </label>
+                            <label>
+                                <input type="radio" name="q1" value="c">
+                                username2025
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="question-card" data-correct="c">
+                        <div class="question-title">
+                            2) Which situation is an example of a phishing attack?
+                        </div>
+                        <div class="options">
+                            <label>
+                                <input type="radio" name="q2" value="a">
+                                Someone looking at your screen while you type your password.
+                            </label>
+                            <label>
+                                <input type="radio" name="q2" value="b">
+                                Trying all possible 4-digit PINs until one works.
+                            </label>
+                            <label>
+                                <input type="radio" name="q2" value="c">
+                                A fake email that looks like your bank and asks you to “reset” your password.
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="question-card" data-correct="a">
+                        <div class="question-title">
+                            3) Which is the best practice to protect your accounts?
+                        </div>
+                        <div class="options">
+                            <label>
+                                <input type="radio" name="q3" value="a">
+                                Use strong passwords and enable Two-Factor Authentication (2FA).
+                            </label>
+                            <label>
+                                <input type="radio" name="q3" value="b">
+                                Use the same password for all accounts so it is easy to remember.
+                            </label>
+                            <label>
+                                <input type="radio" name="q3" value="c">
+                                Write your password on a sticky note and keep it on your laptop.
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="question-card" data-correct="c">
+                        <div class="question-title">
+                            4) Why is reusing the same password on many websites dangerous?
+                        </div>
+                        <div class="options">
+                            <label>
+                                <input type="radio" name="q4" value="a">
+                                Because it is harder for you to remember.
+                            </label>
+                            <label>
+                                <input type="radio" name="q4" value="b">
+                                Because websites do not allow the same password.
+                            </label>
+                            <label>
+                                <input type="radio" name="q4" value="c">
+                                Because if one website is breached, attackers can try the same password on your other accounts.
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="question-card" data-correct="b">
+                        <div class="question-title">
+                            5) What is the main benefit of Two-Factor Authentication (2FA)?
+                        </div>
+                        <div class="options">
+                            <label>
+                                <input type="radio" name="q5" value="a">
+                                It makes passwords shorter and easier to type.
+                            </label>
+                            <label>
+                                <input type="radio" name="q5" value="b">
+                                It adds an extra layer of security by requiring a second factor in addition to the password.
+                            </label>
+                            <label>
+                                <input type="radio" name="q5" value="c">
+                                It automatically changes your password every day.
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-top:10px; display:flex; gap:8px; flex-wrap:wrap;">
+                    <button id="check-quiz-btn" class="btn-primary">Check my answers ✅</button>
+                    <button id="reset-quiz-btn">Reset quiz 🔁</button>
+                </div>
+
+                <div class="quiz-result" id="quiz-result">
+                    Answer the questions and click "Check my answers".
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div>Developed as a Web Application Development I project about password security.</div>
+        <div>Includes: interactive checker, tips, attack types, and a short quiz.</div>
+    </footer>
+</div>
+
+<!-- Sounds (optional: place mp3 files in the same folder with these names) -->
+<audio id="sound-strong" src="success.mp3" preload="auto"></audio>
+<audio id="sound-quiz-good" src="quiz_good.mp3" preload="auto"></audio>
+<audio id="sound-quiz-bad" src="quiz_bad.mp3" preload="auto"></audio>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    // ------- Navigation -------
+    const pages = document.querySelectorAll(".page");
+    const navButtons = document.querySelectorAll(".nav-btn");
+    const goHomeBtn = document.getElementById("go-home-btn");
+
+    function showPage(id) {
+        pages.forEach(function (p) {
+            p.classList.toggle("active", p.id === id);
+        });
+        navButtons.forEach(function (btn) {
+            btn.classList.toggle("active", btn.getAttribute("data-target") === id);
+        });
+    }
+
+    navButtons.forEach(function (btn) {
+        btn.addEventListener("click", function () {
+            const target = btn.getAttribute("data-target");
+            showPage(target);
+        });
+    });
+
+    if (goHomeBtn) {
+        goHomeBtn.addEventListener("click", function () {
+            showPage("home");
+        });
+    }
+
+    // ------- Typing effect -------
+    const typingTextEl = document.getElementById("typing-text");
+    const typingCursorEl = document.getElementById("typing-cursor");
+    const typingPhrases = [
+        "Learn how to create strong passwords 🔐",
+        "Understand common password attacks 🛡️",
+        "Test your knowledge with a quick quiz 🎓"
+    ];
+    let phraseIndex = 0;
+    let charIndex = 0;
+    let typingForward = true;
+
+    function updateTyping() {
+        const current = typingPhrases[phraseIndex];
+        if (typingForward) {
+            charIndex++;
+            if (charIndex >= current.length) {
+                typingForward = false;
+                typingTextEl.textContent = current;
+                setTimeout(updateTyping, 900);
+                return;
+            }
+        } else {
+            charIndex--;
+            if (charIndex <= 0) {
+                typingForward = true;
+                phraseIndex = (phraseIndex + 1) % typingPhrases.length;
+            }
+        }
+        typingTextEl.textContent = current.slice(0, charIndex);
+        setTimeout(updateTyping, 60);
+    }
+    if (typingTextEl && typingCursorEl) {
+        updateTyping();
+        setInterval(function () {
+            typingCursorEl.style.opacity = typingCursorEl.style.opacity === "0" ? "1" : "0";
+        }, 500);
+    }
+
+    // ------- Password strength -------
+    const passwordInput = document.getElementById("password-input");
+    const strengthBar = document.getElementById("strength-bar");
+    const strengthLabel = document.getElementById("strength-label");
+    const strengthEmoji = document.getElementById("strength-emoji");
+    const strongSound = document.getElementById("sound-strong");
+
+    const ruleLength = document.getElementById("rule-length");
+    const ruleUpper = document.getElementById("rule-upper");
+    const ruleLower = document.getElementById("rule-lower");
+    const ruleNumber = document.getElementById("rule-number");
+    const ruleSymbol = document.getElementById("rule-symbol");
+
+    const toggleEyeBtn = document.getElementById("toggle-password-eye");
+    const generateBtn = document.getElementById("generate-password-btn");
+    const generatedSpan = document.getElementById("generated-password");
+
+    let lastLevel = -1;
+
+    function toggleRule(element, ok) {
+        if (!element) return;
+        if (ok) {
+            element.classList.add("ok");
+        } else {
+            element.classList.remove("ok");
+        }
+    }
+
+    function evaluatePassword(pw) {
+        let score = 0;
+
+        const hasLength = pw.length >= 10;
+        const hasUpper = /[A-Z]/.test(pw);
+        const hasLower = /[a-z]/.test(pw);
+        const hasNumber = /[0-9]/.test(pw);
+        const hasSymbol = /[^A-Za-z0-9]/.test(pw);
+
+        toggleRule(ruleLength, hasLength);
+        toggleRule(ruleUpper, hasUpper);
+        toggleRule(ruleLower, hasLower);
+        toggleRule(ruleNumber, hasNumber);
+        toggleRule(ruleSymbol, hasSymbol);
+
+        if (hasLength) score++;
+        if (hasUpper) score++;
+        if (hasLower) score++;
+        if (hasNumber) score++;
+        if (hasSymbol) score++;
+
+        let width = 0;
+        let label = "-";
+        let emoji = "🤔";
+        let color = "#ef4444";
+        let level = 0;
+
+        if (pw.length === 0) {
+            width = 0;
+            level = 0;
+            label = "-";
+            emoji = "🤔";
+        } else if (score <= 2) {
+            width = 30;
+            level = 1;
+            label = "Very weak";
+            emoji = "😢";
+            color = "#ef4444";
+        } else if (score === 3) {
+            width = 55;
+            level = 2;
+            label = "Medium";
+            emoji = "🙂";
+            color = "#f97316";
+        } else if (score === 4) {
+            width = 80;
+            level = 3;
+            label = "Strong";
+            emoji = "😎";
+            color = "#22c55e";
+        } else if (score === 5) {
+            width = 100;
+            level = 4;
+            label = "Very strong";
+            emoji = "🤩";
+            color = "#22c55e";
+        }
+
+        if (strengthBar) {
+            strengthBar.style.width = width + "%";
+            strengthBar.style.background = color;
+        }
+        if (strengthLabel) {
+            strengthLabel.textContent = label;
+        }
+        if (strengthEmoji) {
+            strengthEmoji.textContent = emoji;
+        }
+
+        if (level >= 3 && lastLevel < 3 && strongSound) {
+            try {
+                strongSound.currentTime = 0;
+                strongSound.play();
+            } catch (e) {}
+        }
+        lastLevel = level;
+    }
+
+    if (passwordInput) {
+        passwordInput.addEventListener("input", function (e) {
+            evaluatePassword(e.target.value);
+        });
+    }
+
+    // Show / hide password with eye icon
+    if (toggleEyeBtn && passwordInput) {
+        toggleEyeBtn.addEventListener("click", function () {
+            const isText = passwordInput.type === "text";
+            passwordInput.type = isText ? "password" : "text";
+            toggleEyeBtn.textContent = isText ? "👁️" : "🙈";
+        });
+    }
+
+    // Password generator
+    function generateStrongPassword() {
+        const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_-+=<>?";
+        let pw = "";
+        for (let i = 0; i < 14; i++) {
+            pw += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+        return pw;
+    }
+
+    if (generateBtn && generatedSpan && passwordInput) {
+        generateBtn.addEventListener("click", function () {
+            const pw = generateStrongPassword();
+            generatedSpan.textContent = pw;
+            passwordInput.value = pw;
+            evaluatePassword(pw);
+        });
+    }
+
+    // ------- Random tip -------
+    const randomTipBtn = document.getElementById("random-tip-btn");
+    const randomTipBox = document.getElementById("random-tip-box");
+
+    const extraTips = [
+        "Do not answer security questions with obvious real information. Use long, unique answers.",
+        "Make sure the email linked to your accounts has one of the strongest passwords.",
+        "Be careful with shortened links, especially from unknown senders.",
+        "Use a trusted password manager to store complex passwords.",
+        "Avoid typing your password while you are sharing your screen in meetings.",
+        "Log out from shared or public devices after you finish using them."
+    ];
+
+    if (randomTipBtn && randomTipBox) {
+        randomTipBtn.addEventListener("click", function () {
+            const idx = Math.floor(Math.random() * extraTips.length);
+            randomTipBox.textContent = extraTips[idx];
+        });
+    }
+
+    // ------- Attack cards (accordion) -------
+    const attackCards = document.querySelectorAll(".attack-card");
+    attackCards.forEach(function (card) {
+        card.addEventListener("click", function () {
+            card.classList.toggle("open");
+        });
+    });
+
+    // ------- Quiz -------
+    const quizGoodSound = document.getElementById("sound-quiz-good");
+    const quizBadSound = document.getElementById("sound-quiz-bad");
+    const checkQuizBtn = document.getElementById("check-quiz-btn");
+    const resetQuizBtn = document.getElementById("reset-quiz-btn");
+    const quizResult = document.getElementById("quiz-result");
+    const questionCards = document.querySelectorAll(".question-card");
+
+    if (checkQuizBtn && quizResult) {
+        checkQuizBtn.addEventListener("click", function () {
+            let score = 0;
+            let total = questionCards.length;
+
+            questionCards.forEach(function (card) {
+                const correct = card.getAttribute("data-correct");
+                const radios = card.querySelectorAll('input[type="radio"]');
+                let selectedValue = null;
+
+                card.classList.remove("correct", "wrong");
+
+                radios.forEach(function (r) {
+                    if (r.checked) {
+                        selectedValue = r.value;
+                    }
+                });
+
+                if (selectedValue && selectedValue === correct) {
+                    score++;
+                    card.classList.add("correct");
+                } else {
+                    card.classList.add("wrong");
+                }
+            });
+
+            let message = "Your score: " + score + " out of " + total + ". ";
+            if (score === total) {
+                message += "Excellent! You really understand password security. 🎉";
+            } else if (score >= total - 1) {
+                message += "Good job! Review the tips to reach a perfect score next time. 💪";
+            } else {
+                message += "Keep practicing! Review the attacks and tips sections. 😊";
+            }
+
+            quizResult.textContent = message;
+
+            if (score === total && quizGoodSound) {
+                try {
+                    quizGoodSound.currentTime = 0;
+                    quizGoodSound.play();
+                } catch (e) {}
+            } else if (score <= 2 && quizBadSound) {
+                try {
+                    quizBadSound.currentTime = 0;
+                    quizBadSound.play();
+                } catch (e) {}
+            }
+        });
+    }
+
+    if (resetQuizBtn && quizResult) {
+        resetQuizBtn.addEventListener("click", function () {
+            questionCards.forEach(function (card) {
+                card.classList.remove("correct", "wrong");
+                const radios = card.querySelectorAll('input[type="radio"]');
+                radios.forEach(function (r) {
+                    r.checked = false;
+                });
+            });
+            quizResult.textContent = 'Answer the questions and click "Check my answers".';
+        });
+    }
+});
+</script>
+
+</body>
+</html>
